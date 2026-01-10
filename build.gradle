@@ -1,11 +1,10 @@
 plugins {
     id 'java'
     id 'jacoco'
+    id 'org.sonarqube'
     id 'maven-publish'
-    id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "0.1.25"
-    id("io.github.oleksiiparf.slack-webhook") version "1.0.0"
-    id 'de.zebrajaeger.sendMail' version("0.1.1")
 }
+
 repositories {
     mavenCentral()
 }
@@ -48,7 +47,7 @@ publishing {
 /*
 slack {
     builtSucceed {
-        webHook = "https://hooks.slack.com/services/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"
+        webHook = System.getenv("SLACK_WEBHOOK_URL")
         attachment {
             fallback = "Project successfully built."
             pretext = "Project successfully built."
