@@ -19,10 +19,10 @@ pipeline {
 		stage('Test') {
 			steps {
 				echo 'Running unit tests'
-				sh './gradlew clean test'
+				bat './gradlew clean test'
 
 				echo 'Generating Jacoco coverage report'
-				sh './gradlew jacocoTestReport'
+				bat './gradlew jacocoTestReport'
 			}
 
 			post {
@@ -39,7 +39,7 @@ pipeline {
 		stage('Cucumber') {
 			steps {
 				echo 'Running Cucumber tests'
-				sh './gradlew cucumber'
+				bat './gradlew cucumber'
 			}
 
 			post {
@@ -58,7 +58,7 @@ pipeline {
 			steps {
 				echo 'Running SonarQube analysis'
 				withSonarQubeEnv('SonarQube') {
-					sh './gradlew sonarqube'
+					bat './gradlew sonarqube'
 				}
 			}
 		}
@@ -81,10 +81,10 @@ pipeline {
 		stage('Build') {
 			steps {
 				echo 'Building JAR'
-				sh './gradlew build'
+				bat './gradlew build'
 
 				echo 'Generating Javadoc'
-				sh './gradlew javadoc'
+				bat './gradlew javadoc'
 			}
 
 			post {
@@ -102,7 +102,7 @@ pipeline {
 		stage('Deploy') {
 			steps {
 				echo 'Publishing artifact to MyMavenRepo'
-				sh './gradlew publish'
+				bat './gradlew publish'
 			}
 		}
 	}
