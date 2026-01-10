@@ -1,83 +1,77 @@
 plugins {
     id 'java'
     id 'jacoco'
-    id 'org.sonarqube'
     id 'maven-publish'
+    id "org.sonarqube" version "7.2.2.6593"
 }
 
 repositories {
     mavenCentral()
 }
+
 dependencies {
     testImplementation 'io.cucumber:cucumber-java:7.32.0'
     testImplementation 'io.cucumber:cucumber-junit:7.32.0'
     testImplementation 'junit:junit:4.13.2'
-
 }
 
-cucumberReports {
-    outputDir = file('build/reports/cucumber')
-    buildId = '0'
-    reports = files('build/reports/cucumber/cucumber.json')
+/* ========================= */
+/* JACOCO CONFIGURATION      */
+/* ========================= */
+jacocoTestReport {
+    reports {
+        xml.required = true
+        html.required = true
+    }
 }
 
-jacocoTestReport.dependsOn test
+test.finalizedBy jacocoTestReport
 
+/* ========================= */
+/* SONARQUBE CONFIGURATION   */
+/* ========================= */
+sonarqube {
+    properties {
+        property "sonar.projectKey", "chabbi-ahcen-project"
+        property "sonar.projectName", "chabbi-ahcen-project"
+        property "sonar.coverage.jacoco.xmlReportPaths",
+                "build/reports/jacoco/test/jacocoTestReport.xml"
+    }
+}
+
+/* ========================= */
+/* CUCUMBER TASK             */
+/* ========================= */
+task cucumber(type: JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = "io.cucumber.core.cli.Main"
+    args = [
+            '--plugin', 'json:build/reports/cucumber/cucumber.json',
+            '--glue', 'your.stepdefinitions.package',
+            'feature'
+    ]
+}
+
+/* ========================= */
+/* MAVEN PUBLISH (CI SAFE)   */
+/* ========================= */
 publishing {
     repositories {
         maven {
-            url 'https://mymavenrepo.com/repo/cEmjfkxugPlzLxXg1A2B/'
+            url = System.getenv("MAVEN_REPO_URL")
             credentials {
-                username 'myMavenRepo'
-                password 'test0005'
+                username = System.getenv("MAVEN_REPO_USER")
+                password = System.getenv("MAVEN_REPO_PASSWORD")
             }
         }
     }
 
     publications {
         maven(MavenPublication) {
-            groupId 'chabbi-ahcen'
-            artifactId 'chabbi-ahcen-project'
-            version '0.1-SNAPSHOT'
+            groupId = 'chabbi-ahcen'
+            artifactId = 'chabbi-ahcen-project'
+            version = '0.1-SNAPSHOT'
             from components.java
         }
-    }
-}
-
-/*
-slack {
-    builtSucceed {
-        webHook = System.getenv("SLACK_WEBHOOK_URL")
-        attachment {
-            fallback = "Project successfully built."
-            pretext = "Project successfully built."
-            field {
-                title = "Module"
-                value = project.name
-                shortValue = true
-            }
-            field {
-                title = "Version"
-                value = project.version
-                shortValue = true
-            }
-        }
-    }
-}
-
- */
-
-sendMail {
-    smtpServer {
-        host "smtp.gmail.com"
-        port 587
-        user "ma_chabbi@esi.dz"
-        password "zpxy rkmn unvv hrqo"
-    }
-    mail {
-        from "ma_chabbi@esi.dz"
-        to "mi_khiali@esi.dz"
-      //  body "The build of project ${project.name} has succeeded."
-        subject "Build Succeeded: ${project.name}"
     }
 }
