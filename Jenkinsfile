@@ -127,8 +127,8 @@ pipeline {
 			// Slack
 			echo 'Sending Slack success notification'
 			bat """
-            curl -X POST -H "Content-type: application/json" --data "{\\"text\\": \\"✅ Pipeline SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} \\n${env.BUILD_URL}\\"}" https://hooks.slack.com/services/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
-            """
+        curl -X POST -H "Content-type: application/json" --data "{\\"text\\": \\"✅ Pipeline SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} \\n${env.BUILD_URL}\\", \\"channel\\": \\"#ogl-devs\\"}" https://hooks.slack.com/services/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
+        """
 		}
 
 		failure {
@@ -144,8 +144,8 @@ pipeline {
 			// Slack
 			echo 'Sending Slack failure notification'
 			bat """
-            curl -X POST -H "Content-type: application/json" --data "{\\"text\\": \\"❌ Pipeline FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} \\n${env.BUILD_URL}\\"}" https://hooks.slack.com/services/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
-            """
+        curl -X POST -H "Content-type: application/json" --data "{\\"text\\": \\"❌ Pipeline FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} \\n${env.BUILD_URL}\\", \\"channel\\": \\"#ogl-devs\\"}" https://hooks.slack.com/services/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
+        """
 		}
 	}
 }
