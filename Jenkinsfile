@@ -58,7 +58,7 @@ pipeline {
 			steps {
 				echo 'Running SonarQube analysis'
 				withSonarQubeEnv('SonarQube') {
-					bat './gradlew sonarqube'
+					bat './gradlew sonar'
 				}
 			}
 		}
