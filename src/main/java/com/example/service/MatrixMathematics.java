@@ -14,9 +14,9 @@ public class MatrixMathematics {
 	/**
 	 * Determinant of a square matrix
 	 * The following function find the determinant in a recursively. 
-	 * @param matrix
-	 * @return
-	 * @throws NoSquareException
+	 * @param matrix the matrix to calculate the determinant for
+	 * @return the determinant value of the matrix
+	 * @throws NoSquareException if the matrix is not square
 	 */
 	public static double determinant(Matrix matrix) throws NoSquareException {
 		if (!matrix.isSquare())
@@ -37,8 +37,8 @@ public class MatrixMathematics {
 
 	/**
 	 * Determine the sign; i.e. even numbers have sign + and odds -
-	 * @param i
-	 * @return
+	 * @param i the index to determine the sign for
+	 * @return 1 if i is even, -1 if i is odd
 	 */
 	private static int changeSign(int i) {
 		if (i%2==0)
@@ -47,10 +47,10 @@ public class MatrixMathematics {
 	}
 	/**
 	 * Creates a submatrix excluding the given row and column
-	 * @param matrix
-	 * @param excluding_row
-	 * @param excluding_col
-	 * @return
+	 * @param matrix the original matrix
+	 * @param excluding_row the row index to exclude
+	 * @param excluding_col the column index to exclude
+	 * @return a new matrix with the specified row and column removed
 	 */
 	public static Matrix createSubMatrix(Matrix matrix, int excluding_row, int excluding_col) {
 		Matrix mat = new Matrix(matrix.getNrows()-1, matrix.getNcols()-1);
@@ -71,9 +71,9 @@ public class MatrixMathematics {
 	
 	/**
 	 * The cofactor of a matrix
-	 * @param matrix
-	 * @return
-	 * @throws NoSquareException
+	 * @param matrix the matrix to calculate the cofactor for
+	 * @return the cofactor matrix
+	 * @throws NoSquareException if the matrix is not square
 	 */
 	public static Matrix cofactor(Matrix matrix) throws NoSquareException {
 		Matrix mat = new Matrix(matrix.getNrows(), matrix.getNcols());
@@ -86,14 +86,20 @@ public class MatrixMathematics {
 		return mat;
 	}
 
+	/**
+	 * Adds two integers
+	 * @param a the first integer
+	 * @param b the second integer
+	 * @return the sum of a and b
+	 */
 	public static int add (int a,int b){
 		return a+b;
 	}
 
 	/**
 	 * Transpose of a matrix - Swap the columns with rows
-	 * @param matrix
-	 * @return
+	 * @param matrix the matrix to transpose
+	 * @return the transposed matrix
 	 */
 	public static Matrix transpose(Matrix matrix) {
 		Matrix transposedMatrix = new Matrix(matrix.getNcols(), matrix.getNrows());
@@ -112,9 +118,9 @@ public class MatrixMathematics {
 	 * A matrix that have inverse is called non-singular or invertible. If the matrix does not have inverse it is called singular.
 	 * For a singular matrix the values of the inverted matrix are either NAN or Infinity
 	 * Only square matrices have inverse and the following method will throw exception if the matrix is not square.
-	 * @param matrix
-	 * @return
-	 * @throws NoSquareException
+	 * @param matrix the matrix to invert
+	 * @return the inverse matrix
+	 * @throws NoSquareException if the matrix is not square
 	 */
 	public static Matrix inverse(Matrix matrix) throws NoSquareException {
 		return (transpose(cofactor(matrix)).multiplyByConstant(1.0/determinant(matrix)));
