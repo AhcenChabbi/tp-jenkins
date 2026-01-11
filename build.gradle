@@ -66,7 +66,7 @@ publishing {
         maven {
             url = "https://mymavenrepo.com/repo/cEmjfkxugPlzLxXg1A2B/"
             credentials {
-                username = "h_mokeddem@esi.dz"
+                username = "myMavenRepo"
                 password = "test0005"
             }
         }
