@@ -9,6 +9,7 @@ pipeline {
 		MAVEN_REPO_URL      = "${env.MAVEN_REPO_URL}"
 		MAVEN_REPO_USER     = "${env.MAVEN_REPO_USER}"
 		MAVEN_REPO_PASSWORD = "${env.MAVEN_REPO_PASSWORD}"
+		SLACK_WEBHOOK       = "https://hooks.slack.com/services/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"
 	}
 
 	stages {
@@ -124,11 +125,10 @@ pipeline {
                  """
 
 
-			// Slack
-			echo 'Sending Slack success notification'
-			bat """
-        curl -X POST -H "Content-type: application/json" --data "{\\"text\\": \\"✅ Pipeline SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} \\n${env.BUILD_URL}\\", \\"channel\\": \\"#ogl-devs\\"}" https://hooks.slack.com/services/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
-        """
+			script {
+				def payload = '{\\"text\\":\\"SUCCESS: Jenkins Pipeline Build #' + env.BUILD_NUMBER + ' - API deployed successfully. ' + env.BUILD_URL + '\\"}'
+				bat "curl -X POST -H \"Content-type: application/json\" --data \"${payload}\" ${SLACK_WEBHOOK}"
+			}
 		}
 
 		failure {
@@ -141,11 +141,10 @@ pipeline {
                  """
 
 
-			// Slack
-			echo 'Sending Slack failure notification'
-			bat """
-        curl -X POST -H "Content-type: application/json" --data "{\\"text\\": \\"❌ Pipeline FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} \\n${env.BUILD_URL}\\", \\"channel\\": \\"#ogl-devs\\"}" https://hooks.slack.com/services/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
-        """
+			script {
+				def payload = '{\\"text\\":\\"FAILURE: Jenkins Pipeline Build #' + env.BUILD_NUMBER + ' - Pipeline execution failed. ' + env.BUILD_URL + '\\"}'
+				bat "curl -X POST -H \"Content-type: application/json\" --data \"${payload}\" ${SLACK_WEBHOOK}"
+			}
 		}
 	}
 }
