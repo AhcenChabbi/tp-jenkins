@@ -11,8 +11,14 @@ repositories {
 
 dependencies {
     testImplementation 'io.cucumber:cucumber-java:7.32.0'
-    testImplementation 'io.cucumber:cucumber-junit:7.32.0'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.32.0'
+    testImplementation 'org.junit.platform:junit-platform-suite:1.9.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
     testImplementation 'junit:junit:4.13.2'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 /* ========================= */
@@ -42,12 +48,12 @@ sonarqube {
 /* ========================= */
 /* CUCUMBER TASK             */
 /* ========================= */
-task cucumber(type: JavaExec) {
+tasks.register('cucumber', JavaExec) {
     classpath = sourceSets.test.runtimeClasspath
     mainClass = "io.cucumber.core.cli.Main"
     args = [
             '--plugin', 'json:build/reports/cucumber/cucumber.json',
-            '--glue', 'your.stepdefinitions.package',
+            '--glue', 'stepDefinitions',
             'feature'
     ]
 }
@@ -58,16 +64,16 @@ task cucumber(type: JavaExec) {
 publishing {
     repositories {
         maven {
-            url = System.getenv("MAVEN_REPO_URL")
+            url = System.getenv("MAVEN_REPO_URL") ?: "https://maven.pkg.github.com/default/repo"
             credentials {
-                username = System.getenv("MAVEN_REPO_USER")
-                password = System.getenv("MAVEN_REPO_PASSWORD")
+                username = System.getenv("MAVEN_REPO_USER") ?: ""
+                password = System.getenv("MAVEN_REPO_PASSWORD") ?: ""
             }
         }
     }
 
     publications {
-        maven(MavenPublication) {
+        create('mavenJava', MavenPublication) {
             groupId = 'chabbi-ahcen'
             artifactId = 'chabbi-ahcen-project'
             version = '0.1-SNAPSHOT'
