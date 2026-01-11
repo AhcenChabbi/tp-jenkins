@@ -67,7 +67,7 @@ publishing {
             url = "https://mymavenrepo.com/repo/cEmjfkxugPlzLxXg1A2B/"
             credentials {
                 username = "h_mokeddem@esi.dz"
-                password = "test0007"
+                password = "test0005"
             }
         }
     }
