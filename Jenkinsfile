@@ -9,7 +9,8 @@ pipeline {
 		MAVEN_REPO_URL      = "${env.MAVEN_REPO_URL}"
 		MAVEN_REPO_USER     = "${env.MAVEN_REPO_USER}"
 		MAVEN_REPO_PASSWORD = "${env.MAVEN_REPO_PASSWORD}"
-		SLACK_WEBHOOK       = "https://hooks.slack.com/services/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"
+		SLACK_WEBHOOK       = "https://hooks.slack.com/services/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"
+		//SLACK_WEBHOOK       = "https://hooks.slack.com/services/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"
 	}
 
 	stages {
