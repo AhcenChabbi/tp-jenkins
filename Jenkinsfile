@@ -122,6 +122,13 @@ pipeline {
                  - Build: OK
                  - Deploy: SUCCESS
                  """
+
+
+			// Slack
+			echo 'Sending Slack success notification'
+			bat """
+            curl -X POST -H "Content-type: application/json" --data "{\\"text\\": \\"✅ Pipeline SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} \\n${env.BUILD_URL}\\"}" ${env.SLACK_WEBHOOK}
+            """
 		}
 
 		failure {
@@ -132,6 +139,13 @@ pipeline {
 
                  Please check Jenkins logs for details.
                  """
+
+
+			// Slack
+			echo 'Sending Slack failure notification'
+			bat """
+            curl -X POST -H "Content-type: application/json" --data "{\\"text\\": \\"❌ Pipeline FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} \\n${env.BUILD_URL}\\"}" ${env.SLACK_WEBHOOK}
+            """
 		}
 	}
 }
